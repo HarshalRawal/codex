@@ -3,11 +3,25 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Chrome, Github, ArrowRight, Shield } from "lucide-react"
 import { signIn } from "@/auth"
 
+/**
+ * Initiates a server-side sign-in using the Google OAuth provider.
+ *
+ * This server action calls `signIn("google")` to start the OAuth flow (typically causing a redirect to Google's consent page).
+ *
+ * @returns A promise that resolves when the signIn call completes.
+ */
 async function handleGoogleSignIn() {
   "use server"
   await signIn("google")
 }
 
+/**
+ * Initiates a server-side sign-in flow with GitHub.
+ *
+ * This server action (`"use server"`) calls the authentication helper to start the GitHub OAuth flow.
+ *
+ * @returns A promise that resolves when the sign-in request has been dispatched.
+ */
 async function handleGithubSignIn() {
   "use server"
   await signIn("github")
