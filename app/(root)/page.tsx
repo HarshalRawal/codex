@@ -37,7 +37,7 @@ export default function HomePage() {
               className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               asChild
             >
-              <Link href="/sign-in">
+              <Link href="/dashboard">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>

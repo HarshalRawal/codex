@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
-import UserButton from "../components/user-botton"
+import UserButton from "../auth/components/user-botton"
 
 export function Header() {
   return (
