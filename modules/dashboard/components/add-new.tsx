@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-
+import TemplateSelectionModal from "./template-selection-model"
 const AddNewButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState<{
@@ -57,6 +57,11 @@ const AddNewButton = () => {
           </div>
         </div>
       </div>
+      <TemplateSelectionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={()=>{}}
+      />
     </>
   )
 }
