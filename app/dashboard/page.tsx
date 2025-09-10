@@ -1,12 +1,39 @@
-import AddNewButton from "@/modules/dashboard/components/add-new"
-import AddRepo from "@/modules/dashboard/components/add-repo"
-import EmptyState from "@/modules/dashboard/components/empty-state"
-import UserButton from "@/modules/auth/components/user-botton"
-import { Code2 } from "lucide-react"
-import { getAllPlaygroundForCurrentUser } from "@/modules/dashboard/actions"
-
+import AddNewButton from "@/modules/dashboard/components/add-new";
+import AddRepo from "@/modules/dashboard/components/add-repo";
+import EmptyState from "@/modules/dashboard/components/empty-state";
+import UserButton from "@/modules/auth/components/user-botton";
+import { Code2, Star } from "lucide-react";
+import {
+  deleteProjectById,
+  editProjectById,
+  getAllPlaygroundForCurrentUser,
+  duplicateProjectById,
+} from "@/modules/dashboard/actions";
+import ProjectTable from "@/modules/dashboard/components/project-table";
+import { on } from "events";
+import { de, id } from "date-fns/locale";
 export default async function Dashboard() {
-  const playgrounds = await getAllPlaygroundForCurrentUser()
+  const playgrounds = await getAllPlaygroundForCurrentUser();
+  
+  const formattedPlaygrounds = playgrounds!.map((playground) => ({
+    id: playground.id,
+    title: playground.title,
+    description: playground.description ?? null, // nullable
+    template: playground.template,
+    createdAt: playground.createdAt,
+    updatedAt: playground.updatedAt,
+    userId: playground.userId,
+    user: {
+      id: playground.user.id,
+      name: playground.user.name, // may be null
+      email: playground.user.email,
+      image: playground.user.image, // may be null
+      role: playground.user.role,
+      createdAt: playground.user.createdAt,
+      updatedAt: playground.user.updatedAt,
+    },
+    Starmark: playground.Starmark,
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-blue-900/20 dark:to-purple-900/20">
@@ -22,7 +49,9 @@ export default async function Dashboard() {
                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
                   Dashboard
                 </h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Manage your playgrounds</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Manage your playgrounds
+                </p>
               </div>
             </div>
             <UserButton />
@@ -57,24 +86,19 @@ export default async function Dashboard() {
           </div>
 
           <div className="p-6">
-            {(!playgrounds || playgrounds.length === 0) ? (
+            {!playgrounds || playgrounds.length === 0 ? (
               <EmptyState />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {playgrounds.map((pg) => (
-                  <div
-                    key={pg.id}
-                    className="p-4 rounded-xl border shadow-sm hover:shadow-md transition-all duration-200"
-                  >
-                    <h4 className="text-lg font-semibold">{pg.name}</h4>
-                    <p className="text-sm text-slate-500">{pg.description}</p>
-                  </div>
-                ))}
-              </div>
+                <ProjectTable
+                  projects={formattedPlaygrounds || []}
+                  onDeleteProject={deleteProjectById}
+                  onUpdateProject={editProjectById}
+                  onDuplicateProject={duplicateProjectById}
+                />
             )}
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }
